@@ -9,8 +9,11 @@ public class item {
 
 	private String string;
 	private Map<String, String[]> stringMap;
-	
-	public String getString() {
+
+        @SerializedName(".VERSION")
+        private String version;
+
+        public String getString() {
 		return string;
 	}
 	public void setString(String string) {
