@@ -1,0 +1,19 @@
+#+TITLE: REST API server in Bash
+#+OPTIONS: toc:2 num:nil
+
+This is a very simple script to write a REST API server in Bash. It is just for fun.
+
+Start the server, download the code, open a terminal and execute
+
+#+BEGIN_SRC bash
+bash ./server.sh
+#+END_SRC
+
+On other terminal, execute
+
+#+BEGIN_SRC bash
+~ $ curl http://localhost:8888/status
+OK
+#+END_SRC
+
+Available endpoints =/info=, =/status=
