@@ -1,0 +1,9 @@
+Prerequisite:
+- terraform 0.13.*
+- AWS cli setup with proper permission
+
+Steps:
+- execute `terraform init`
+- execute `terraform apply`
+
+At end of the execution, a URL will be printed and used to acces the site.

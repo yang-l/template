@@ -1,0 +1,91 @@
+---
+- hosts: localhost
+  become: yes
+
+  vars:
+    root_username: username
+    root_password: password
+    rds_dns: main-db-aurora-cluster.cluster-c8izg5p7jgkz.ap-southeast-2.rds.amazonaws.com
+    wp_username: wp_username
+    wp_password: wp_password
+    wp_database: wordpress
+
+  tasks:
+
+  - name: Install Packages
+    apt:
+      pkg:
+        - wordpress
+        - php
+        - libapache2-mod-php
+        - php-mysql
+      state: present
+
+  - name: Write Apache config file
+    copy:
+      dest: "/etc/apache2/sites-available/wordpress.conf"
+      content: |
+        Alias /blog /usr/share/wordpress
+        <Directory /usr/share/wordpress>
+            Options FollowSymLinks
+            AllowOverride Limit Options FileInfo
+            DirectoryIndex index.php
+            Order allow,deny
+            Allow from all
+        </Directory>
+        <Directory /usr/share/wordpress/wp-content>
+            Options FollowSymLinks
+            Order allow,deny
+            Allow from all
+        </Directory>
+
+  - name: Config Apache
+    shell: |
+      a2ensite wordpress
+      a2enmod rewrite
+      service apache2 reload
+
+  - name: Install PyMySQL
+    pip:
+      name: PyMySQL
+
+  - name: Msql config file
+    copy:
+      dest: "mysql.cnf"
+      content: |
+        [client]
+        ssl_mode=DISABLED
+        user={{ root_username }}
+        password={{ root_password }}
+        host={{ rds_dns }}
+
+  - name: Create 'wordpress' database
+    community.mysql.mysql_db:
+      name: "{{ wp_database }}"
+      state: present
+      config_file: "./mysql.cnf"
+      config_overrides_defaults: yes
+    no_log: true
+
+  - name: Grant Permission
+    community.mysql.mysql_user:
+      name: "{{ wp_username }}"
+      password: "{{ wp_password }}"
+      config_file: "./mysql.cnf"
+      login_host: "{{ rds_dns }}"
+      host: '%'
+      priv: "{{ wp_database }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER"
+      state: present
+
+  - name: Create Wordpress config
+    copy:
+      dest: "/etc/wordpress/config-ap-southeast-2.elb.amazonaws.com.php"
+      content: |
+        <?php
+        define('DB_NAME', '{{ wp_database }}');
+        define('DB_USER', '{{ wp_username }}');
+        define('DB_PASSWORD', '{{ wp_password }}');
+        define('DB_HOST', '{{ rds_dns }}');
+        define('DB_COLLATE', 'utf8_general_ci');
+        define('WP_CONTENT_DIR', '/usr/share/wordpress/wp-content');
+        ?>

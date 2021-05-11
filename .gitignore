@@ -1,0 +1,2 @@
+tf/wordpress/.terraform/
+tf/wordpress/terraform.tfstate*
