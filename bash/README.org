@@ -1,0 +1,64 @@
+#+TITLE: Find the largest X numbers in a large text file in bash
+#+OPTIONS: toc:2 num:nil
+
+This is a simple bash script to find the top X of the largest numbers in a text file.
+
+Assumptions:
++ one number per line
++ positive number only
+  #+BEGIN_SRC
+  2682123787236
+  3132530048025
+  2562487963588
+  6451273625717
+  1642193850131
+  4411724878010
+  7230460792780
+  639909703751
+  4969040455763
+  4836096635555
+  #+END_SRC
+
+Pros:
++ pure in Bash / Coreutils
+
+Crons:
+- May not perform well comparing to other languages
+
+* Usages:
+
++ Generate a test data set
+
+  #+BEGIN_SRC
+  ./topX.sh -f generate_test
+  #+END_SRC
+
+  The generated file is stored under the `input.txt` file
+
++ Find the top X largest number
+
+  #+BEGIN_SRC
+  $ ./topX.sh -i input.txt -x 20
+  9999999983702
+  9999999741558
+  9999999678694
+  9999999636784
+  9999999464490
+  9999999278225
+  9999999273568
+  9999999057036
+  9999999043066
+  9999998763669
+  9999998505227
+  9999998426065
+  9999998307321
+  9999998225830
+  9999998193234
+  9999998072162
+  9999998044223
+  9999998011626
+  9999997955747
+  9999997899868
+  #+END_SRC
+
+  The above command, as an example, gives the top 20 largest numbers in the file
