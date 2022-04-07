@@ -1,0 +1,61 @@
+#+TITLE: Find the largest X numbers in a large text file
+#+OPTIONS: toc:2 num:nil
+
+This simple Typescript script can find the top X of the largest numbers in a text file. A Bash equivalent implementation can be found [[https://github.com/yang-l/template/blob/master/bash/topx/README.org][here]].
+
+This script is assuming a text file
+
++ one number per line
++ positive number only
+  #+BEGIN_SRC
+  2682123787236
+  3132530048025
+  2562487963588
+  6451273625717
+  1642193850131
+  4411724878010
+  7230460792780
+  639909703751
+  4969040455763
+  4836096635555
+  #+END_SRC
+
+* Usages:
+
++ Install the dependency
+
+  #+BEGIN_SRC
+  yarn install
+  #+END_SRC
+
++ To find the top X largest number
+
+  First change the settings in the file =topX.ts= to point to the input text file and the top X number to be found
+
+  #+BEGIN_SRC
+  const inputFile = 'XXXXXXX'
+  const topXCount = YYY
+  #+END_SRC
+
+  Then execute the command as
+
+  #+BEGIN_SRC
+  yarn topX
+  #+END_SRC
+
+  This should print a output like
+
+  #+BEGIN_SRC
+  $ yarn topX
+  yarn run v1.22.18
+  $ yarn ts-node -T topX.ts
+  $ /Users/yangliu/personal/template/typescript/topx/node_modules/.bin/ts-node -T topX.ts
+  Top 10 number(s) - 9999999983702,9999999741558,9999999678694,9999999636784,9999999464490,9999999278225,9999999273568,9999999057036,9999999043066,9999998763669
+  ✨  Done in 49.13s.
+  #+END_SRC
+
++ To run the test
+
+  #+BEGIN_SRC
+  yarn jest
+  #+END_SRC
