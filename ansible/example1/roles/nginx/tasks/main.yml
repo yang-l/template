@@ -1,0 +1,5 @@
+---
+- include_tasks: terraform.yml
+  when: task in ["init","plan","apply","destroy"]
+- include_tasks: test.yml
+  when: task in ["apply","test"]

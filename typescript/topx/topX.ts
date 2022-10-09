@@ -3,7 +3,7 @@ import * as readline from 'readline';
 import { insertNSort } from './topX_helper';
 
 // Change the parameter below
-const inputFile = 'input.txt'; // input file
+const inputFile = 'test.txt'; // input file
 const topXCount = 10; // top X largest number
 
 

@@ -1,0 +1,11 @@
+---
+task: "no-op" # available values - init / plan / apply / destroy / test
+terraform_path: "{{ role_path }}/templates/terraform"
+
+nginx_version: "1.23.1"
+nginx_container_name: "Nginx"
+nginx_container_external_port: "8081"
+
+backend_s3_bucket: "thisisatestbucketencroach2021"
+backend_s3_key: "terraform.tfstate"
+backend_s3_region: "us-east-1"

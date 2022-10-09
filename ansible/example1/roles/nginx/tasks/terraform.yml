@@ -1,0 +1,57 @@
+---
+- name: (terrafrom) Init
+  community.general.terraform:
+    project_path: '{{ terraform_path }}'
+    force_init: true
+    backend_config:
+      bucket: "{{ backend_s3_bucket }}"
+      key: "{{ backend_s3_key }}"
+      region: "{{ backend_s3_region }}"
+    state: absent
+  when: task == "init"
+
+- name: (terraform) Plan
+  community.general.terraform:
+    project_path: '{{ terraform_path }}'
+    state: planned
+    plan_file: 'tf.plan'
+    variables:
+      nginx_version: "{{ nginx_version }}"
+      nginx_container_name: "{{ nginx_container_name }}"
+      nginx_container_external_port: "{{ nginx_container_external_port }}"
+  register: plan
+  when: task == "plan"
+
+- name: (terraform|output) Plan
+  ansible.builtin.debug:
+    msg: "{{ plan.stdout.split('\n') }}"
+  when: task == "plan"
+
+- name: (terraform) Apply
+  community.general.terraform:
+    project_path: '{{ terraform_path }}'
+    state: present
+    plan_file: 'tf.plan'
+    variables:
+      nginx_version: "{{ nginx_version }}"
+      nginx_container_name: "{{ nginx_container_name }}"
+      nginx_container_external_port: "{{ nginx_container_external_port }}"
+  register: apply
+  when: task == "apply"
+
+- name: (terraform|output) Apply
+  ansible.builtin.debug:
+    msg: "{{ apply.stdout.split('\n') }}"
+  when: task == "apply"
+
+- name: (terraform) Destroy
+  community.general.terraform:
+    project_path: '{{ terraform_path }}'
+    state: absent
+  register: absent
+  when: task == "destroy"
+
+- name: (terraform|output) Destroy
+  ansible.builtin.debug:
+    msg: "{{ absent.stdout.split('\n') }}"
+  when: task == "destroy"

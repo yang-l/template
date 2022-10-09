@@ -1,0 +1,4 @@
+roles/nginx/templates/terraform/.terraform.lock.hcl
+roles/nginx/templates/terraform/.terraform
+roles/nginx/templates/terraform/terraform.tfstate*
+roles/nginx/templates/terraform/tf.plan
